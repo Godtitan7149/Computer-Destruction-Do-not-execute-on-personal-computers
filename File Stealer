@@ -1,0 +1,25 @@
+import os
+import shutil
+import zipfile
+
+# Set the directory path to the folder where you want to save the files
+dir_path = '/path/to/your/directory'
+
+# Create a zip file of all files in the home directory
+shutil.make_archive('files', 'zip', '/Users/')
+
+# Set the password for the zip file
+password = 'set your password'
+
+# Encrypt the zip file with the password
+with zipfile.ZipFile('files.zip', 'w') as myzip:
+    myzip.setpassword(bytes(password, 'utf-8'))
+
+# Move the zip file to the directory path
+shutil.move('files.zip', dir_path)
+
+# Remove the original zip file
+os.remove('files.zip')
+
+# Lock the folder with the password
+os.system(f"echo '{password}' | sudo -S chmod 000 {dir_path}")
